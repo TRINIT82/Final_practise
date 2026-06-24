@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ property.title }} - Деталі{% endblock %}
+
+{% block content %}
+<article class="detail-card">
+    <h1 class="detail-title">{{ property.title }}</h1>
+    
+    {% if property.image_url %}
+        <div class="detail-image-box" style="width: 100%; max-height: 480px; overflow: hidden; margin: 20px 0; border: 1px solid #eae7e1;">
+            <img src="{{ property.image_url }}" alt="{{ property.title }}" style="width: 100%; height: auto; max-height: 480px; object-fit: cover; display: block;">
+        </div>
+    {% else %}
+        <div class="detail-image-placeholder" style="width: 100%; height: 250px; background: #fbfaf8; border: 1px solid #eae7e1; display: flex; align-items: center; justify-content: center; color: #6a655c; margin: 20px 0; font-size: 0.9rem; letter-spacing: 1px; text-transform: uppercase;">
+            📸 Фотографія об'єкта очікується
+        </div>
+    {% endif %}
+    
+    <p class="detail-desc">
+        {{ property.description }}
+    </p>
+    
+    <section class="price-action-box">
+        <span class="price-info">
+            <span class="price-label">Вартість об'єкту:</span>
+            <strong class="price-tag">${{ property.price_usd }}</strong>
+            
+            {% if rates %}
+                <span class="price-uah">
+                    (~ {{ (property.price_usd * rates.UAH) }} ₴)
+                </span>
+            {% endif %}
+        </span>
+
+        <form action="{{ url_for('cart_add', property_id=property.id) }}" method="POST">
+            <button type="submit" class="btn-success">
+                🛒 Додати в кошик
+            </button>
+        </form>
+    </section>
+
+    <a href="{{ url_for('catalog') }}" class="back-link">← Повернутися до каталогу</a>
+</article>
+{% endblock %}

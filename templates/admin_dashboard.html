@@ -1,0 +1,193 @@
+{% extends 'base.html' %}
+
+{% block title %}Панель адміністратора — Arcova{% endblock %}
+
+{% block content %}
+<div style="max-width: 1200px; margin: 40px auto; padding: 0 20px; font-family: 'Montserrat', sans-serif;">
+    
+    <header style="text-align: center; margin-bottom: 40px;">
+        <h1 style="font-family: 'Playfair Display', serif; font-size: 2.5rem; font-weight: 400; margin-bottom: 10px; color: #1a1a1a;">Панель адміністратора</h1>
+        <p style="color: #6a655c; text-transform: uppercase; letter-spacing: 2px; font-size: 0.8rem;">Керування платформою Arcova</p>
+        <div style="width: 60px; height: 1px; background: #c9a054; margin: 15px auto 0;"></div>
+    </header>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div style="padding: 15px; margin-bottom: 25px; background: #fbfaf8; border-left: 3px solid {% if category == 'success' %}#2e7d32{% elif category == 'danger' %}#cc3333{% else %}#c9a054{% endif %}; font-size: 0.95rem;">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+
+    <section style="background: #fbfaf8; border: 1px solid #eae7e1; padding: 30px; margin-bottom: 40px;">
+        <h2 style="font-family: 'Playfair Display', serif; font-size: 1.6rem; font-weight: 400; margin-top: 0; margin-bottom: 20px; color: #1a1a1a;">✨ Додати новий об'єкт</h2>
+        
+        <form action="{{ url_for('admin_add_property') }}" method="POST" style="display: flex; flex-direction: column; gap: 20px;">
+            <div style="display: flex; gap: 20px; flex-wrap: wrap;">
+                <div style="flex: 2; min-width: 250px;">
+                    <label style="display: block; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; color: #6a655c;">Назва об'єкта *</label>
+                    <input type="text" name="title" required placeholder="Наприклад: Elite Zen Villa" style="width: 100%; padding: 12px; border: 1px solid #eae7e1; font-family: inherit; font-size: 0.9rem; box-sizing: border-box;">
+                </div>
+                <div style="flex: 1; min-width: 150px;">
+                    <label style="display: block; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; color: #6a655c;">Ціна (USD) *</label>
+                    <input type="number" name="price_usd" step="0.01" required placeholder="250000" style="width: 100%; padding: 12px; border: 1px solid #eae7e1; font-family: inherit; font-size: 0.9rem; box-sizing: border-box;">
+                </div>
+            </div>
+
+            <div style="display: flex; gap: 20px; flex-wrap: wrap;">
+                <div style="flex: 1; min-width: 250px;">
+                    <label style="display: block; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; color: #6a655c;">Адреса розташування</label>
+                    <input type="text" name="address" placeholder="Наприклад: Київ, Печерськ" style="width: 100%; padding: 12px; border: 1px solid #eae7e1; font-family: inherit; font-size: 0.9rem; box-sizing: border-box;">
+                </div>
+                <div style="flex: 1; min-width: 250px;">
+                    <label style="display: block; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; color: #6a655c;">Посилання на фото (URL)</label>
+                    <input type="url" name="image_url" placeholder="https://example.com/image.jpg" style="width: 100%; padding: 12px; border: 1px solid #eae7e1; font-family: inherit; font-size: 0.9rem; box-sizing: border-box;">
+                </div>
+            </div>
+
+            <div>
+                <label style="display: block; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; color: #6a655c;">Опис об'єкта</label>
+                <textarea name="description" rows="4" placeholder="Детальний опис преміальної нерухомості..." style="width: 100%; padding: 12px; border: 1px solid #eae7e1; font-family: inherit; font-size: 0.9rem; resize: vertical; box-sizing: border-box;"></textarea>
+            </div>
+
+            <div style="text-align: right;">
+                <button type="submit" style="padding: 12px 30px; background: #1a1a1a; color: #fff; border: none; font-family: inherit; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 2px; cursor: pointer; transition: 0.2s;" onmouseover="this.style.background='#c9a054'" onmouseout="this.style.background='#1a1a1a'">
+                    Опублікувати об'єкт →
+                </button>
+            </div>
+        </form>
+    </section>
+
+    <section style="background: #fff; border: 1px solid #eae7e1; padding: 30px; margin-bottom: 40px;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; flex-wrap: wrap; gap: 15px;">
+            <h2 style="font-family: 'Playfair Display', serif; font-size: 1.6rem; font-weight: 400; margin: 0;">🏡 Поточний каталог нерухомості</h2>
+            <span style="font-size: 0.85rem; color: #6a655c; text-transform: uppercase; letter-spacing: 1px;">Всього об'єктів: {{ properties|length }}</span>
+        </div>
+        
+        <div style="overflow-x: auto;">
+            <table style="width: 100%; border-collapse: collapse; font-size: 0.9rem; text-align: left; min-width: 600px;">
+                <thead>
+                    <tr style="border-bottom: 2px solid #1a1a1a; color: #6a655c; text-transform: uppercase; font-size: 0.75rem; letter-spacing: 1px;">
+                        <th style="padding: 12px 8px;">ID</th>
+                        <th style="padding: 12px 8px;">Назва об'єкта</th>
+                        <th style="padding: 12px 8px;">Ціна</th>
+                        <th style="padding: 12px 8px;">Адреса</th>
+                        <th style="padding: 12px 8px;">Опис</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for prop in properties %}
+                    <tr style="border-bottom: 1px solid #eae7e1; transition: 0.2s;" onmouseover="this.style.backgroundColor='#fbfaf8'" onmouseout="this.style.backgroundColor='transparent'">
+                        <td style="padding: 12px 8px; color: #888;">#{{ prop.id }}</td>
+                        <td style="padding: 12px 8px; font-weight: 600; color: #1a1a1a;">{{ prop.title }}</td>
+                        <td style="padding: 12px 8px; font-weight: 600; color: #c9a054;">
+                            ${{ prop.price_usd if prop.price_usd else prop.price }}
+                        </td>
+                        <td style="padding: 12px 8px; color: #555;">{{ prop.address if prop.address else '—' }}</td>
+                        <td style="padding: 12px 8px; color: #666; max-width: 250px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                            {{ prop.description }}
+                        </td>
+                    </tr>
+                    {% else %}
+                    <tr>
+                        <td colspan="5" style="padding: 20px; text-align: center; color: #888; font-style: italic;">Нерухомість ще не додана в базу даних.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <section style="background: #fff; border: 1px solid #eae7e1; padding: 30px; margin-bottom: 40px;">
+        <h2 style="font-family: 'Playfair Display', serif; font-size: 1.6rem; font-weight: 400; margin-bottom: 20px;">💬 Усі відгуки</h2>
+        
+        <div style="overflow-x: auto;">
+            <table style="width: 100%; border-collapse: collapse; font-size: 0.9rem; text-align: left; min-width: 600px;">
+                <thead>
+                    <tr style="border-bottom: 2px solid #1a1a1a; color: #6a655c; text-transform: uppercase; font-size: 0.75rem; letter-spacing: 1px;">
+                        <th style="padding: 12px 8px;">Автор</th>
+                        <th style="padding: 12px 8px;">Текст відгуку</th>
+                        <th style="padding: 12px 8px;">Статус</th>
+                        <th style="padding: 12px 8px; text-align: right;">Дії</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for review in reviews %}
+                    <tr style="border-bottom: 1px solid #eae7e1; transition: 0.2s;" onmouseover="this.style.backgroundColor='#fbfaf8'" onmouseout="this.style.backgroundColor='transparent'">
+                        <td style="padding: 12px 8px; font-weight: 600;">
+                            {{ review.author.username if review.author else 'Анонім' }}
+                        </td>
+                        <td style="padding: 12px 8px; font-style: italic; color: #444;">
+                            "{{ review.text }}"
+                        </td>
+                        <td style="padding: 12px 8px;">
+                            {% if review.is_approved %}
+                                <span style="color: #2e7d32; font-weight: 600; background: #e8f5e9; padding: 3px 8px; font-size: 0.8rem; text-transform: uppercase;">Схвалено</span>
+                            {% else %}
+                                <span style="color: #ef6c00; font-weight: 600; background: #fff3e0; padding: 3px 8px; font-size: 0.8rem; text-transform: uppercase;">На модерації</span>
+                            {% endif %}
+                        </td>
+                        <td style="padding: 12px 8px; text-align: right;">
+                            <div style="display: flex; gap: 8px; justify-content: flex-end;">
+                                {% if not review.is_approved %}
+                                <form action="{{ url_for('admin_approve_review', review_id=review.id) }}" method="POST" style="margin: 0;">
+                                    <button type="submit" style="background: #2e7d32; color: white; border: none; padding: 6px 12px; font-family: inherit; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1px; cursor: pointer; transition: 0.2s;" onmouseover="this.style.background='#1b5e20'" onmouseout="this.style.background='#2e7d32'">
+                                        👍 Схвалити
+                                    </button>
+                                </form>
+                                {% endif %}
+                                
+                                <form action="{{ url_for('admin_reject_review', review_id=review.id) }}" method="POST" style="margin: 0;" onsubmit="return confirm('Ви впевнені, що хочете видалити цей відгук?');">
+                                    <button type="submit" style="background: #cc3333; color: white; border: none; padding: 6px 12px; font-family: inherit; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1px; cursor: pointer; transition: 0.2s;" onmouseover="this.style.background='#b30000'" onmouseout="this.style.background='#cc3333'">
+                                        🗑️ Видалити
+                                    </button>
+                                </form>
+                            </div>
+                        </td>
+                    </tr>
+                    {% else %}
+                    <tr>
+                        <td colspan="4" style="padding: 20px; text-align: center; color: #888; font-style: italic;">Жодного відгуку ще не залишено.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <section style="background: #fff; border: 1px solid #eae7e1; padding: 30px;">
+        <h2 style="font-family: 'Playfair Display', serif; font-size: 1.6rem; font-weight: 400; margin-bottom: 20px;">👤 Користувачі платформи</h2>
+        
+        <div style="overflow-x: auto;">
+            <table style="width: 100%; border-collapse: collapse; font-size: 0.9rem; text-align: left; min-width: 600px;">
+                <thead>
+                    <tr style="border-bottom: 2px solid #1a1a1a; color: #6a655c; text-transform: uppercase; font-size: 0.75rem; letter-spacing: 1px;">
+                        <th style="padding: 12px 8px;">ID</th>
+                        <th style="padding: 12px 8px;">Ім'я (Username)</th>
+                        <th style="padding: 12px 8px;">Email</th>
+                        <th style="padding: 12px 8px;">Роль</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for u in users %}
+                    <tr style="border-bottom: 1px solid #eae7e1;">
+                        <td style="padding: 12px 8px; color: #888;">#{{ u.id }}</td>
+                        <td style="padding: 12px 8px; font-weight: 600; color: #1a1a1a;">{{ u.username }}</td>
+                        <td style="padding: 12px 8px; color: #555;">{{ u.email }}</td>
+                        <td style="padding: 12px 8px;">
+                            {% if u.is_admin %}
+                                <strong style="color: #c9a054; font-size: 0.8rem; background: #1a1a1a; padding: 4px 10px; letter-spacing: 1px;">ADMIN</strong>
+                            {% else %}
+                                <span style="color: #888; font-size: 0.85rem; border: 1px solid #eae7e1; padding: 3px 8px;">Клієнт</span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </section>
+</div>
+{% endblock %}

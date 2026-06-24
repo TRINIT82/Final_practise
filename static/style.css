@@ -1,0 +1,420 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap');
+
+:root {
+    --bg-dark: #0f1219;
+    --bg-light: #fbf9f4;
+    --bg-card: #ffffff;
+    --text-dark: #11141a;
+    --text-light: #f3f4f6;
+    --text-muted: #8e95a5;
+    --accent-gold: #c5a880;
+    --accent-gold-hover: #b3946b;
+    --border-color: #e5e2da;
+    --font-serif: 'Playfair Display', Georgia, serif;
+    --font-sans: 'Inter', sans-serif;
+}
+
+/* Загальні стилі */
+body {
+    margin: 0;
+    padding: 0;
+    font-family: var(--font-sans);
+    background-color: var(--bg-light);
+    color: var(--text-dark);
+    line-height: 1.6;
+}
+
+/* Навігація в стилі Arcova */
+.navbar {
+    background-color: var(--bg-dark);
+    padding: 25px 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.nav-group-left, .nav-group-right {
+    display: flex;
+    align-items: center;
+    gap: 30px;
+}
+
+.nav-brand {
+    font-family: var(--font-serif);
+    color: var(--text-light);
+    font-size: 1.5rem;
+    text-decoration: none;
+    letter-spacing: 1px;
+}
+
+.nav-brand span {
+    color: var(--accent-gold);
+}
+
+.nav-link {
+    color: var(--text-muted);
+    text-decoration: none;
+    font-size: 0.9rem;
+    letter-spacing: 0.5px;
+    transition: color 0.3s;
+}
+
+.nav-link:hover {
+    color: var(--text-light);
+}
+
+.nav-user-info {
+    color: var(--accent-gold);
+    font-size: 0.9rem;
+}
+
+.nav-link-reg {
+    color: var(--text-light);
+    border: 1px solid var(--accent-gold);
+    padding: 8px 18px;
+    text-decoration: none;
+    font-size: 0.85rem;
+    transition: all 0.3s;
+}
+
+.nav-link-reg:hover {
+    background-color: var(--accent-gold);
+    color: var(--bg-dark);
+}
+
+.nav-link-logout {
+    color: #ef4444;
+    text-decoration: none;
+    font-size: 0.9rem;
+}
+
+/* Баннер курсу валют */
+.rates-banner {
+    background-color: var(--accent-gold);
+    color: var(--bg-dark);
+    text-align: center;
+    padding: 8px;
+    font-size: 0.85rem;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+
+/* Контейнери */
+.main-container {
+    max-width: 1300px;
+    margin: 60px auto;
+    padding: 0 40px;
+}
+
+.flash-container {
+    max-width: 1300px;
+    margin: 20px auto 0 auto;
+    padding: 0 40px;
+}
+
+.flash-message {
+    padding: 15px;
+    border-radius: 0;
+    margin-bottom: 15px;
+    font-size: 0.95rem;
+}
+
+.flash-success { background-color: #e6f4ea; color: #137333; border-left: 3px solid #137333; }
+.flash-warning { background-color: #fef7e0; color: #b06000; border-left: 3px solid #b06000; }
+.flash-danger { background-color: #fce8e6; color: #c5221f; border-left: 3px solid #c5221f; }
+
+/* Героїчна секція (Hero) */
+.hero-section {
+    background-color: var(--bg-dark);
+    color: var(--text-light);
+    padding: 100px 60px;
+    text-align: center;
+    margin-bottom: 80px;
+}
+
+.hero-section h1 {
+    font-family: var(--font-serif);
+    font-size: 3.5rem;
+    font-weight: 400;
+    margin: 0 0 20px 0;
+    letter-spacing: -1px;
+}
+
+.hero-subtitle {
+    font-family: var(--font-serif);
+    font-style: italic;
+    color: var(--text-muted);
+    font-size: 1.4rem;
+    margin: 0;
+}
+
+/* Статистика як на макеті */
+.stats-strip {
+    background-color: #161b26;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    padding: 30px;
+    margin: -40px 40px 80px 40px;
+    position: relative;
+    z-index: 10;
+    border: 1px solid rgba(255,255,255,0.05);
+}
+
+.stat-item {
+    text-align: center;
+    border-right: 1px solid rgba(255,255,255,0.1);
+}
+
+.stat-item:last-child {
+    border-right: none;
+}
+
+.stat-number {
+    display: block;
+    font-family: var(--font-serif);
+    font-size: 2rem;
+    color: var(--accent-gold);
+}
+
+.stat-label {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+/* Секції та заголовки */
+.section-title {
+    font-family: var(--font-serif);
+    font-size: 2.2rem;
+    font-weight: 400;
+    margin-bottom: 40px;
+    position: relative;
+}
+
+.section-title::before {
+    content: '';
+    position: absolute;
+    top: -15px;
+    left: 0;
+    width: 30px;
+    height: 1px;
+    background-color: var(--accent-gold);
+}
+
+.section-divider {
+    border: 0;
+    border-top: 1px solid var(--border-color);
+    margin: 80px 0;
+}
+
+/* Преміальна сітка карток */
+.property-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+    gap: 40px;
+}
+
+.property-card {
+    background-color: var(--bg-card);
+    border: 1px solid var(--border-color);
+    padding: 35px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    transition: transform 0.4s, box-shadow 0.4s;
+}
+
+.property-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 20px 40px rgba(0,0,0,0.03);
+}
+
+.property-card h2, .property-card h3 {
+    font-family: var(--font-serif);
+    font-size: 1.6rem;
+    font-weight: 400;
+    margin: 0 0 15px 0;
+}
+
+.property-desc {
+    color: #5c6270;
+    font-size: 0.95rem;
+    margin-bottom: 30px;
+}
+
+.property-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 1px solid var(--border-color);
+    padding-top: 20px;
+}
+
+.property-price, .property-price-accent {
+    font-family: var(--font-serif);
+    font-size: 1.3rem;
+    color: var(--text-dark);
+}
+
+/* Кнопки */
+.btn-primary {
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--text-dark);
+    text-decoration: none;
+    border-bottom: 1px solid var(--accent-gold);
+    padding-bottom: 4px;
+    transition: color 0.3s, border-color 0.3s;
+}
+
+.btn-primary:hover {
+    color: var(--accent-gold-hover);
+    border-color: var(--text-dark);
+}
+
+.btn-success {
+    background-color: var(--bg-dark);
+    color: var(--text-light);
+    border: 1px solid var(--accent-gold);
+    padding: 15px 35px;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.btn-success:hover {
+    background-color: var(--accent-gold);
+    color: var(--bg-dark);
+}
+
+/* Детальна сторінка об'єкту */
+.detail-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    padding: 50px;
+}
+
+.detail-title {
+    font-family: var(--font-serif);
+    font-size: 3rem;
+    font-weight: 400;
+    margin-top: 0;
+}
+
+.detail-desc {
+    font-size: 1.1rem;
+    color: #4a515e;
+    margin: 30px 0 50px 0;
+}
+
+.price-action-box {
+    border-top: 1px solid var(--border-color);
+    border-bottom: 1px solid var(--border-color);
+    padding: 30px 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 40px;
+}
+
+.price-info { display: block; }
+.price-label { font-size: 0.8rem; text-transform: uppercase; color: var(--text-muted); letter-spacing: 1px; display: block; }
+.price-tag { font-family: var(--font-serif); font-size: 2.2rem; color: var(--text-dark); }
+.price-uah { font-size: 1.1rem; color: var(--text-muted); margin-left: 15px; font-style: italic; }
+
+/* Кошик */
+.cart-container {
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    padding: 40px;
+}
+
+.cart-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 25px 0;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.cart-item:last-of-type { border-bottom: 2px solid var(--text-dark); }
+.cart-item-title { font-family: var(--font-serif); font-size: 1.25rem; color: var(--text-dark); text-decoration: none; }
+.cart-item-meta { display: flex; gap: 40px; align-items: center; }
+.cart-item-price { font-family: var(--font-serif); font-size: 1.2rem; }
+.badge { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px; }
+.badge-paid { color: #137333; }
+.badge-unpaid { color: var(--accent-gold); }
+.cart-total { display: block; text-align: right; margin-top: 40px; font-family: var(--font-serif); font-size: 1.8rem; }
+
+/* Відгуки */
+.review-blockquote {
+    border-left: 2px solid var(--accent-gold);
+    padding-left: 30px;
+    margin: 40px 0;
+}
+
+.review-blockquote p {
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-size: 1.3rem;
+    color: #3a414e;
+}
+
+.review-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    padding: 30px;
+    margin-bottom: 20px;
+}
+
+.review-text { font-family: var(--font-serif); font-style: italic; font-size: 1.2rem; margin-bottom: 15px; }
+.review-meta { font-size: 0.8rem; text-transform: uppercase; color: var(--text-muted); letter-spacing: 0.5px; }
+
+/* Елегантний темний футер */
+.main-footer {
+    background-color: var(--bg-dark);
+    color: var(--text-light);
+    padding: 60px 40px;
+    margin-top: 100px;
+    border-top: 1px solid rgba(255,255,255,0.05);
+}
+
+.footer-grid {
+    max-width: 1300px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 2fr repeat(2, 1fr);
+    gap: 60px;
+}
+
+.footer-brand {
+    font-family: var(--font-serif);
+    font-size: 1.8rem;
+    margin-bottom: 20px;
+    display: block;
+}
+
+.footer-brand span { color: var(--accent-gold); }
+.footer-text { color: var(--text-muted); font-size: 0.9rem; max-width: 300px; }
+.footer-title { font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1px; color: var(--accent-gold); margin-bottom: 20px; display: block;}
+.footer-links { display: flex; flex-direction: column; gap: 12px; }
+.footer-link { color: var(--text-muted); text-decoration: none; font-size: 0.9rem; transition: color 0.3s; }
+.footer-link:hover { color: var(--text-light); }
+
+.property-image-box {
+    width: 100%;
+    height: 250px;
+    overflow: hidden;
+    margin-bottom: 15px;
+}
+
+.property-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}

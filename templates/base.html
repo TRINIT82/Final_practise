@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Home Agency{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <span class="nav-group-left">
+                <a href="{{ url_for('index') }}" class="nav-brand">ARCOVA<span>.</span></a>
+                <a href="{{ url_for('catalog') }}" class="nav-link">Каталог</a>
+                <a href="{{ url_for('reviews') }}" class="nav-link">Відгуки</a>
+            </span>
+            <span class="nav-group-right">
+                {% if current_user.is_authenticated %}
+                    <a href="{{ url_for('cart') }}" class="nav-link">Кошик 🛒</a>
+                    <a href="{{ url_for('dashboard') }}" style="color: #c9a054; text-decoration: none; font-weight: 600; margin-right: 15px; transition: 0.3s;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='#c9a054'">
+                    👤 {{ current_user.username }}</a>
+                    <a href="{{ url_for('logout') }}" class="nav-link-logout">Вийти</a>
+                {% else %}
+                    <a href="{{ url_for('login') }}" class="nav-link">Вхід</a>
+                    <a href="{{ url_for('register') }}" class="nav-link-reg">Реєстрація</a>
+                {% endif %}
+            </span>
+        </nav>
+
+        {% if rates %}
+        <section class="rates-banner">
+            Курс USD: <strong>{{ rates.UAH }} ₴</strong>
+        </section>
+        {% endif %}
+    </header>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        <section class="flash-container">
+          {% for category, message in messages %}
+            <p class="flash-message flash-{{ category }}">
+                {{ message }}
+            </p>
+          {% endfor %}
+        </section>
+      {% endif %}
+    {% endwith %}
+
+    <main class="main-container">
+        {% block content %}{% endblock %}
+    </main>
+
+    <footer class="main-footer">
+        <section class="footer-grid">
+            <article>
+                <span class="footer-brand">ARCOVA<span>.</span></span>
+                <p class="footer-text">Створюємо позачасові простори, побудовані навколо вашого життя та комфорту.</p>
+            </article>
+            <article>
+                <span class="footer-title">Навігація</span>
+                <nav class="footer-links">
+                    <a href="{{ url_for('catalog') }}" class="footer-link">Каталог об'єктів</a>
+                    <a href="{{ url_for('reviews') }}" class="footer-link">Відгуки клієнтів</a>
+                </nav>
+            </article>
+            <article>
+                <span class="footer-title">Контакти</span>
+                <nav class="footer-links">
+                    <span class="footer-link">hello@arcova.com</span>
+                    <span class="footer-link">+380 (44) 555-01-98</span>
+                </nav>
+            </article>
+        </section>
+    </footer>
+</body>
+</html>

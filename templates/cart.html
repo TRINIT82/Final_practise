@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+
+{% block title %}Мій кошик{% endblock %}
+
+{% block content %}
+<h1 class="section-title">Ваш кошик</h1>
+
+<section class="cart-container">
+    {% for order in orders %}
+    <article class="cart-item">
+        <span class="cart-item-title-wrapper">
+            <a href="{{ url_for('property_detail', id=order.property.id) }}" class="cart-item-title">
+                {{ order.property.title }}
+            </a>
+        </span>
+        
+        <span class="cart-item-meta" style="display: flex; align-items: center; gap: 12px;">
+            <span class="cart-item-price">${{ order.property.price_usd }}</span>
+            
+            <span class="badge {% if order.is_paid %}badge-paid{% else %}badge-unpaid{% endif %}">
+                {{ 'Оплачено' if order.is_paid else 'Очікує оплати' }}
+            </span>
+
+            {% if not order.is_paid %}
+                <a href="{{ url_for('simulate_payment', order_id=order.id) }}" style="text-decoration: none; background: #1a1a1a; color: #fff; padding: 6px 14px; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1px; transition: 0.2s; display: inline-flex; align-items: center;" onmouseover="this.style.background='#c9a054'" onmouseout="this.style.background='#1a1a1a'">
+                    💳 Оплатити
+                </a>
+            {% endif %}
+            </span>
+    </article>
+    {% else %}
+        <p>Кошик порожній. Завітайте до <a href="{{ url_for('catalog') }}" class="btn-primary">каталогу</a>.</p>
+    {% endfor %}
+
+    {% if orders %}
+    <footer class="cart-total">
+        Загалом: <strong>${{ total }}</strong>
+    </footer>
+    {% endif %}
+</section>
+{% endblock %}

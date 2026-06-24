@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+
+{% block title %}Головна - ARCOVA{% endblock %}
+
+{% block content %}
+<section class="hero-section">
+    <h1>We Build Timeless Spaces.<br>Built Around You.</h1>
+    <p class="hero-subtitle">Знайдіть будинок своєї мрії разом з нами.</p>
+</section>
+
+<section class="stats-strip">
+    <article class="stat-item">
+        <span class="stat-number">15+</span>
+        <span class="stat-label">Років досвіду</span>
+    </article>
+    <article class="stat-item">
+        <span class="stat-number">320+</span>
+        <span class="stat-label">Об'єктів продано</span>
+    </article>
+    <article class="stat-item">
+        <span class="stat-number">98%</span>
+        <span class="stat-label">Задоволених клієнтів</span>
+    </article>
+    <article class="stat-item">
+        <span class="stat-number">25+</span>
+        <span class="stat-label">Нагород в індустрії</span>
+    </article>
+</section>
+
+<h2 class="section-title">🔥 Популярні пропозиції</h2>
+<section class="property-grid">
+    {% for property in properties %}
+        <article class="property-card">
+            <header>
+                <h3>{{ property.title }}</h3>
+                <p class="property-desc">{{ property.description | truncate(100) }}</p>
+            </header>
+            <footer class="property-footer">
+                <span class="property-price-accent">${{ property.price_usd or property.price }}</span>
+                <a href="{{ url_for('property_detail', id=property.id) }}" class="btn-primary">Детальніше →</a>
+            </footer>
+        </article>
+    {% else %}
+        <p>Наразі немає доступних об'єктів.</p>
+    {% endfor %}
+</section>
+
+<hr class="section-divider">
+
+<h2 class="section-title">💬 Що про нас говорять</h2>
+<section>
+    {% for review in reviews %}
+        <blockquote class="review-blockquote">
+            <p>"{{ review.text }}"</p>
+        </blockquote>
+    {% else %}
+        <p>Відгуків поки немає.</p>
+    {% endfor %}
+</section>
+{% endblock %}
