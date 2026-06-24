@@ -1,98 +1,78 @@
 {% extends 'base.html' %}
 
-{% block title %}Arcova Secure Payment{% endblock %}
+{% block title %}Оплата — Arcova{% endblock %}
 
 {% block content %}
-<div style="min-height: 80vh; display: flex; align-items: center; justify-content: center; background: #faf9f6; padding: 40px 20px; font-family: 'Montserrat', sans-serif;">
-    
-    <div style="width: 100%; max-width: 480px; background: #ffffff; border: 1px solid #eae7e1; padding: 40px; box-shadow: 0 20px 40px rgba(0, 0, 0, 0.03); border-radius: 4px;">
-        
-        <div style="text-align: center; margin-bottom: 35px;">
-            <h2 style="font-family: 'Playfair Display', serif; font-size: 2rem; letter-spacing: 3px; color: #1a1a1a; margin: 0; font-weight: 400;">ARCOVA</h2>
-            <div style="display: inline-flex; align-items: center; gap: 6px; margin-top: 8px; background: #e8f5e9; padding: 4px 10px; border-radius: 20px;">
-                <span style="color: #2e7d32; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 1px; font-weight: 600;">🔒 Захищене з'єднання</span>
-            </div>
+<div class="payment-wrapper">
+    <div class="payment-card">
+
+        <div class="payment-logo">
+            <h2>ARCOVA<span>.</span></h2>
+            <span class="secure-badge">🔒 Захищене з'єднання</span>
         </div>
 
-        <div style="border-top: 1px solid #f0ede7; border-bottom: 1px solid #f0ede7; padding: 20px 0; margin-bottom: 30px; display: flex; justify-content: space-between; align-items: center;">
+        <div class="payment-summary">
             <div>
-                <span style="display: block; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1px; color: #a39f96;">Об'єкт / Замовлення</span>
-                <strong style="font-family: 'Playfair Display', serif; font-size: 1.1rem; color: #1a1a1a; font-weight: 400; display: block; margin-top: 4px;">
+                <span class="payment-summary__label">Об'єкт / Замовлення</span>
+                <span class="payment-summary__title">
                     #{{ order.id }} {{ order.property.title if order.property else 'Elite Villa' }}
-                </strong>
+                </span>
             </div>
-            <div style="text-align: right;">
-                <span style="display: block; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1px; color: #a39f96;">Сума до сплати</span>
-                <strong style="font-size: 1.4rem; color: #c9a054; font-weight: 500; display: block; margin-top: 4px;">
-                    ${{ order.property.price_usd if order.property else '20000.0' }}
-                </strong>
+            <div>
+                <span class="payment-summary__label">Сума до сплати</span>
+                <span class="payment-summary__amount">
+                    ${{ order.property.price_usd if order.property else '0.00' }}
+                </span>
             </div>
         </div>
 
-        <form method="POST" style="display: flex; flex-direction: column; gap: 20px;">
-            
-            <div>
-                <label style="display: block; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; color: #1a1a1a; font-weight: 500;">Номер картки</label>
-                <div style="position: relative;">
-                    <input type="text" id="card-number" placeholder="4444 5555 6666 7777" required maxlength="19" autocomplete="off"
-                           style="width: 100%; padding: 14px 14px 14px 45px; border: 1px solid #eae7e1; font-size: 1rem; box-sizing: border-box; letter-spacing: 2px; transition: border 0.3s; border-radius: 2px; font-family: monospace;">
-                    <span style="position: absolute; left: 15px; top: 50%; transform: translateY(-50%); font-size: 1.2rem; color: #a39f96;">💳</span>
+        <form class="payment-form" method="POST">
+
+            <div class="form-group">
+                <label for="card-number">Номер картки</label>
+                <div class="payment-form__input-icon">
+                    <span class="payment-form__icon">💳</span>
+                    <input type="text" id="card-number" placeholder="4444 5555 6666 7777"
+                           maxlength="19" autocomplete="off" required>
                 </div>
             </div>
 
-            <div style="display: flex; gap: 20px;">
-                <div style="flex: 1;">
-                    <label style="display: block; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; color: #1a1a1a; font-weight: 500;">Термін дії</label>
-                    <input type="text" id="card-expiry" placeholder="MM/YY" required maxlength="5" autocomplete="off"
-                           style="width: 100%; padding: 14px; border: 1px solid #eae7e1; font-size: 1rem; box-sizing: border-box; text-align: center; border-radius: 2px; font-family: monospace;">
+            <div class="payment-form-row">
+                <div class="form-group">
+                    <label for="card-expiry">Термін дії</label>
+                    <input type="text" id="card-expiry" placeholder="MM/YY"
+                           maxlength="5" autocomplete="off" required>
                 </div>
-                <div style="flex: 1;">
-                    <label style="display: block; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; color: #1a1a1a; font-weight: 500;">CVV2</label>
-                    <input type="password" placeholder="•••" required maxlength="3" autocomplete="off"
-                           style="width: 100%; padding: 14px; border: 1px solid #eae7e1; font-size: 1rem; box-sizing: border-box; text-align: center; letter-spacing: 3px; border-radius: 2px;">
+                <div class="form-group">
+                    <label for="card-cvv">CVV2</label>
+                    <input type="password" id="card-cvv" placeholder="•••"
+                           maxlength="3" autocomplete="off" required>
                 </div>
             </div>
 
-            <div>
-                <label style="display: block; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; color: #1a1a1a; font-weight: 500;">Ім'я на картці</label>
-                <input type="text" placeholder="RAY ARCOVA" required autocomplete="off"
-                       style="width: 100%; padding: 14px; border: 1px solid #eae7e1; font-size: 0.95rem; box-sizing: border-box; text-transform: uppercase; letter-spacing: 1px; border-radius: 2px;">
+            <div class="form-group">
+                <label for="card-name">Ім'я на картці</label>
+                <input type="text" id="card-name" placeholder="RAY ARCOVA"
+                       autocomplete="off" required>
             </div>
 
-            <button type="submit" style="margin-top: 10px; padding: 16px; background: #1a1a1a; color: #ffffff; border: none; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 2px; font-weight: 500; cursor: pointer; transition: all 0.3s; border-radius: 2px;"
-                    onmouseover="this.style.background='#c9a054'; this.style.transform='translateY(-1px)';" 
-                    onmouseout="this.style.background='#1a1a1a'; this.style.transform='translateY(0)';">
-                Підтвердити оплату
-            </button>
+            <button type="submit" class="btn-submit">Підтвердити оплату</button>
         </form>
-        
-        <div style="text-align: center; margin-top: 25px;">
-            <a href="{{ url_for('cart') }}" style="font-size: 0.8rem; color: #a39f96; text-decoration: none; border-bottom: 1px dashed #eae7e1; transition: color 0.2s;" onmouseover="this.style.color='#1a1a1a'" onmouseout="this.style.color='#a39f96'">
-                Повернутися до кошика
-            </a>
-        </div>
+
+        <a href="{{ url_for('cart') }}" class="payment-back-link">Повернутися до кошика</a>
 
     </div>
 </div>
 
 <script>
     const cardNumber = document.getElementById('card-number');
-    cardNumber.addEventListener('input', function (e) {
-        let target = e.target;
-        let position = target.selectionStart;
-        let length = target.value.length;
-        
-        target.value = target.value.replace(/\s/g, '').replace(/(.{4})/g, '$1 ').trim();
-        
-        if(target.value.length > length && target.value.charAt(position - 1) === ' ') {
-            target.setSelectionRange(position + 1, position + 1);
-        } else {
-            target.setSelectionRange(position, position);
-        }
+    cardNumber.addEventListener('input', function(e) {
+        let value = e.target.value.replace(/\s/g, '');
+        e.target.value = value.replace(/(.{4})/g, '$1 ').trim();
     });
 
     const cardExpiry = document.getElementById('card-expiry');
-    cardExpiry.addEventListener('input', function (e) {
+    cardExpiry.addEventListener('input', function(e) {
         let value = e.target.value.replace(/\D/g, '');
         if (value.length >= 2) {
             e.target.value = value.slice(0, 2) + '/' + value.slice(2, 4);

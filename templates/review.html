@@ -3,61 +3,38 @@
 {% block title %}Відгуки про компанію — Arcova{% endblock %}
 
 {% block content %}
-<div style="max-width: 800px; margin: 60px auto; padding: 0 20px; font-family: 'Montserrat', sans-serif; color: #1a1a1a;">
-    
-    {% with messages = get_flashed_messages(with_categories=true) %}
-        {% if messages %}
-            {% for category, message in messages %}
-                <div style="padding: 15px 20px; margin-bottom: 30px; background-color: #f4f1ea; border-left: 3px solid #c9a054; color: #1a1a1a; font-family: 'Playfair Display', serif; font-style: italic; font-size: 1.05rem; letter-spacing: 0.5px; box-shadow: 0 2px 4px rgba(0,0,0,0.02);">
-                    {{ message }}
-                </div>
-            {% endfor %}
-        {% endif %}
-    {% endwith %}
+<div class="reviews-wrapper">
 
-    <header style="text-align: center; margin-bottom: 50px;">
-        <h1 style="font-family: 'Playfair Display', serif; font-size: 2.6rem; font-weight: 400; letter-spacing: 1px; margin-bottom: 15px;">
-            Відгуки про компанію
-        </h1>
-        <div style="width: 50px; height: 1px; background: #c9a054; margin: 0 auto 25px;"></div>
+    <header class="reviews-header">
+        <h1>Відгуки про компанію</h1>
+        <hr class="reviews-divider">
     </header>
 
-    <section style="margin-bottom: 60px; display: flex; flex-direction: column; gap: 25px;">
+    <section class="reviews-list">
         {% for review in reviews %}
-            <article style="background: #fff; padding: 30px; border: 1px solid #eae7e1; box-sizing: border-box;">
-                <div style="color: #c9a054; font-size: 0.9rem; margin-bottom: 15px; letter-spacing: 2px;">
-                    {% if review.rating %}{{'★' * review.rating}}{% else %}★★★★★{% endif %}
-                </div>
-                
-                <p style="font-family: 'Playfair Display', serif; font-style: italic; font-size: 1.15rem; line-height: 1.6; color: #2d2d2d; margin: 0 0 20px 0;">
-                    "{{ review.text }}"
+            <article class="review-card">
+                <p class="review-card__stars">
+                    {% if review.rating %}{{ '★' * review.rating }}{% else %}★★★★★{% endif %}
                 </p>
-                
-                <footer style="text-align: right; color: #8a857c; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 2px;">
-                    — {{ review.user.username if review.user else 'Клієнт Arcova' }}
+                <p class="review-card__text">"{{ review.text }}"</p>
+                <footer class="review-card__author">
+                    — {{ review.author.username if review.author else 'Клієнт Arcova' }}
                 </footer>
             </article>
         {% else %}
-            <p style="text-align: center; color: #8a857c; font-style: italic; font-size: 1.1rem; margin-bottom: 4px;">
-                Поки немає опублікованих відгуків.
-            </p>
+            <p class="review-empty">Поки немає опублікованих відгуків.</p>
         {% endfor %}
     </section>
 
-    <section style="background: #fbfaf8; padding: 40px 45px; border: 1px solid #eae7e1;">
-        <h2 style="font-family: 'Playfair Display', serif; font-size: 1.6rem; font-weight: 400; letter-spacing: 0.5px; margin-bottom: 25px; text-align: center;">
-            Залишити відгук
-        </h2>
-        
+    <section class="review-form-section">
+        <h2>Залишити відгук</h2>
+
         {% if current_user.is_authenticated %}
-            <form action="{{ url_for('add_review') }}" method="POST" style="display: flex; flex-direction: column; gap: 25px;">
-                
-                <div style="display: flex; flex-direction: column; gap: 8px; max-width: 240px;">
-                    <label for="review_rating" style="font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1.5px; color: #6a655c; font-weight: 600;">
-                        Ваша оцінка:
-                    </label>
-                    <select id="review_rating" name="rating" required 
-                            style="width: 100%; padding: 10px 12px; border: 1px solid #d3cfc7; background: #fff; font-family: inherit; font-size: 0.95rem; color: #1a1a1a; outline: none; cursor: pointer;-webkit-appearance: none;">
+            <form class="review-form" action="{{ url_for('add_review') }}" method="POST">
+
+                <div class="form-group form-group--narrow">
+                    <label for="rating">Ваша оцінка</label>
+                    <select id="rating" name="rating" required>
                         <option value="5" selected>⭐⭐⭐⭐⭐ (5 / 5)</option>
                         <option value="4">⭐⭐⭐⭐ (4 / 5)</option>
                         <option value="3">⭐⭐⭐ (3 / 5)</option>
@@ -66,28 +43,23 @@
                     </select>
                 </div>
 
-                <div style="display: flex; flex-direction: column; gap: 8px;">
-                    <label for="review_text" style="font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1.5px; color: #6a655c; font-weight: 600;">
-                        Ваше враження:
-                    </label>
-                    <textarea id="review_text" name="text" rows="5" required 
-                              placeholder="Поділіться вашим досвідом розробки чи купівлі нерухомості з Arcova..." 
-                              style="width: 100%; padding: 15px; border: 1px solid #d3cfc7; font-family: inherit; font-size: 0.95rem; line-height: 1.5; color: #1a1a1a; resize: vertical; outline: none; box-sizing: border-box;"></textarea>
+                <div class="form-group">
+                    <label for="text">Ваше враження</label>
+                    <textarea id="text" name="text" rows="5" required
+                              placeholder="Поділіться вашим досвідом..."></textarea>
                 </div>
-                
-                <button type="submit" 
-                        style="align-self: center; padding: 14px 40px; background: #1a1a1a; color: #fff; border: 1px solid #1a1a1a; cursor: pointer; text-transform: uppercase; letter-spacing: 2px; font-size: 0.75rem; font-weight: 600; transition: all 0.3s ease;"
-                        onmouseover="this.style.background='#c9a054'; this.style.borderColor='#c9a054';" 
-                        onmouseout="this.style.background='#1a1a1a'; this.style.borderColor='#1a1a1a';">
+
+                <button type="submit" class="btn-submit" style="max-width: 220px; margin: 0 auto;">
                     Надіслати відгук →
                 </button>
             </form>
         {% else %}
-            <p style="text-align: center; color: #6a655c; font-size: 0.95rem; margin: 10px 0 0 0;">
-                Щоб залишити відгук, будь ласка, 
-                <a href="{{ url_for('login') }}" style="color: #1a1a1a; font-weight: 600; text-decoration: underline; letter-spacing: 0.5px;">увійдіть до системи</a>.
+            <p class="review-login-prompt">
+                Щоб залишити відгук, будь ласка,
+                <a href="{{ url_for('login') }}">увійдіть до системи</a>.
             </p>
         {% endif %}
     </section>
+
 </div>
 {% endblock %}

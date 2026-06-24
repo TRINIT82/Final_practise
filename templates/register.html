@@ -1,44 +1,42 @@
 {% extends "base.html" %}
 
-{% block title %}Реєстрація{% endblock %}
+{% block title %}Реєстрація — Arcova{% endblock %}
 
 {% block content %}
-<div class="row justify-content-center">
-    <div class="col-md-5">
-        <div class="card shadow-sm">
-            <div class="card-header bg-dark text-white">
-                <h5 class="mb-0"><i class="bi bi-person-plus-fill"></i> Реєстрація</h5>
-            </div>
-            <div class="card-body">
-                <form method="POST">
-                    <div class="mb-3">
-                        <label for="username" class="form-label">Ім'я користувача</label>
-                        <input type="text" class="form-control" id="username" name="username"
-                               placeholder="Введіть ім'я" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="email" class="form-label">Електронна пошта</label>
-                        <input type="email" class="form-control" id="email" name="email"
-                               placeholder="example@email.com" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="password" class="form-label">Пароль</label>
-                        <input type="password" class="form-control" id="password" name="password"
-                               placeholder="Мінімум 6 символів" required>
-                    </div>
-                    <div class="mb-4">
-                        <label for="confirm_password" class="form-label">Підтвердіть пароль</label>
-                        <input type="password" class="form-control" id="confirm_password" name="confirm_password"
-                               placeholder="Повторіть пароль" required>
-                    </div>
-                    <div class="d-grid">
-                        <button type="submit" class="btn btn-dark">Зареєструватись</button>
-                    </div>
-                </form>
-            </div>
-            <div class="card-footer text-center text-muted small">
-                Вже маєте акаунт? <a href="{{ url_for('login') }}">Увійти</a>
-            </div>
+<div class="auth-wrapper">
+    <div class="auth-card">
+        <div class="auth-card__header">
+            <h2>Реєстрація</h2>
+        </div>
+
+        <div class="auth-card__body">
+            <form method="POST">
+                <div class="form-group">
+                    <label for="username">Ім'я користувача</label>
+                    <input type="text" id="username" name="username" placeholder="Введіть ім'я" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="email">Електронна пошта</label>
+                    <input type="email" id="email" name="email" placeholder="example@email.com" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="password">Пароль</label>
+                    <input type="password" id="password" name="password" placeholder="Мінімум 6 символів" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="confirm_password">Підтвердіть пароль</label>
+                    <input type="password" id="confirm_password" name="confirm_password" placeholder="Повторіть пароль" required>
+                </div>
+
+                <button type="submit" class="btn-submit">Зареєструватись</button>
+            </form>
+        </div>
+
+        <div class="auth-card__footer">
+            Вже маєте акаунт? <a href="{{ url_for('login') }}">Увійти</a>
         </div>
     </div>
 </div>
