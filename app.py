@@ -258,6 +258,7 @@ def admin_add_property():
 
     if not title or not price_usd:
         flash('Назва об\'єкта та ціна є обов\'язковими для заповнення!', 'warning')
+        
         return redirect(url_for('dashboard'))
     
     try:
