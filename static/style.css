@@ -219,7 +219,8 @@ body {
 .property-card {
     background-color: var(--bg-card);
     border: 1px solid var(--border-color);
-    padding: 35px;
+    padding: 0;
+    overflow: hidden;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -229,6 +230,14 @@ body {
 .property-card:hover {
     transform: translateY(-5px);
     box-shadow: 0 20px 40px rgba(0,0,0,0.03);
+}
+
+.property-card__body {
+    padding: 25px 30px 30px;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    justify-content: space-between;
 }
 
 .property-card h2, .property-card h3 {

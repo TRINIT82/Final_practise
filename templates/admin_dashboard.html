@@ -11,7 +11,6 @@
         <hr class="admin-divider">
     </header>
 
-    {# Додати новий об'єкт #}
     <section class="admin-section admin-section--alt">
         <h2>✨ Додати новий об'єкт</h2>
 
@@ -76,6 +75,14 @@
                         <td class="admin-table__price">${{ prop.price_usd }}</td>
                         <td>{{ prop.address or '—' }}</td>
                         <td class="admin-table__desc">{{ prop.description }}</td>
+                        <td>
+                            <form action="{{ url_for('admin_delete_property', id=prop.id) }}" method="POST"
+                            onsubmit="return confirm('Видалити об\'єкт?')">
+                            <button type="submit" class="action-btn action-btn--reject">
+                             🗑️ Видалити
+                            </button>
+                            </form>
+                    </td>
                     </tr>
                 {% else %}
                     <tr>
@@ -151,6 +158,7 @@
                     <th>Ім'я (Username)</th>
                     <th>Email</th>
                     <th>Роль</th>
+                    <th>Дії</th>
                 </tr>
             </thead>
             <tbody>

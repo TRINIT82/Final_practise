@@ -55,6 +55,6 @@ class Order(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
-    property_id = db.Column(db.Integer, db.ForeignKey('properties.id'), nullable=False)
+    property_id = db.Column(db.Integer, db.ForeignKey('properties.id', ondelete='CASCADE'), nullable=True)
     is_paid = db.Column(db.Boolean, default=False)
     created_at = db.Column(db.DateTime, default=datetime.now)

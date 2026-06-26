@@ -111,7 +111,7 @@ def index():
     reviews = Review.query.filter_by(is_approved=True).all()
     
     try:
-        response = requests.get('https://api.frankfurter.app/latest?from=USD&to=UAH,EUR')
+        response = requests.get('https://api.exchangerate-api.com/v4/latest/USD')
         rates = response.json()['rates']
     except:
         rates = None
@@ -176,6 +176,14 @@ def property_detail(id):
     property = Property.query.get_or_404(id)
     
     return render_template('property.html', property=property)
+
+@app.route('/cart/clear', methods=['POST'])
+@login_required
+def cart_clear():
+    Order.query.filter_by(user_id=current_user.id).delete()
+    db.session.commit()
+    flash('Кошик очищено.', 'info')
+    return redirect(url_for('cart'))
 
 @app.route('/cart/add/<int:property_id>', methods=['POST'])
 @login_required

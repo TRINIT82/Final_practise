@@ -37,5 +37,15 @@
         Загалом: <strong>${{ total }}</strong>
     </footer>
     {% endif %}
+
+    {% if orders %}
+<form action="{{ url_for('cart_clear') }}" method="POST"
+      onsubmit="return confirm('Очистити весь кошик?')">
+    <button type="submit" class="action-btn action-btn--reject">
+        🗑️ Очистити кошик
+    </button>
+</form>
+{% endif %}
+
 </section>
 {% endblock %}

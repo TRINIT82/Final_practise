@@ -31,14 +31,21 @@
 <section class="property-grid">
     {% for property in properties %}
         <article class="property-card">
-            <header>
-                <h3>{{ property.title }}</h3>
-                <p class="property-desc">{{ property.description | truncate(100) }}</p>
-            </header>
-            <footer class="property-footer">
-                <span class="property-price-accent">${{ property.price_usd or property.price }}</span>
-                <a href="{{ url_for('property_detail', id=property.id) }}" class="btn-primary">Детальніше →</a>
-            </footer>
+            <div class="property-image-box">
+                <img class="property-image"
+                     src="{{ property.image_url if property.image_url else 'https://picsum.photos/seed/' ~ property.id ~ '/800/420' }}"
+                     alt="{{ property.title }}">
+            </div>
+            <div class="property-card__body">
+                <header>
+                    <h3>{{ property.title }}</h3>
+                    <p class="property-desc">{{ property.description | truncate(100) }}</p>
+                </header>
+                <footer class="property-footer">
+                    <span class="property-price-accent">${{ property.price_usd or property.price }}</span>
+                    <a href="{{ url_for('property_detail', id=property.id) }}" class="btn-primary">Детальніше →</a>
+                </footer>
+            </div>
         </article>
     {% else %}
         <p>Наразі немає доступних об'єктів.</p>
